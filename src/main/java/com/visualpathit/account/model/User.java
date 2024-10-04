@@ -1,11 +1,11 @@
 package com.visualpathit.account.model;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.Set;
-/**{@author imrant} !*/
+/**{@author waheedk} !*/
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
@@ -44,7 +44,7 @@ public class User implements Serializable {
     private Set<Role> roles;
     /** {@inheritDoc}} !*/
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     /** {@link User#id} */
     public Long getId() {
         return id;
