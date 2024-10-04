@@ -1,0 +1,32 @@
+version: 0.2
+env:
+  parameter-store:
+    VPROFILE-STAGE-URL: VPROFILE-STAGE-URL
+
+phases:
+  pre_build:
+    commands:
+      - ls src\
+      - git status
+      - git checkout cd-aws-jenkins
+      - git status
+      - ls src\
+      - Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+      - choco install jdk8 -y
+      - choco install maven -y
+      - choco install googlechrome -y
+      - choco install git -y
+      - mkdir C:\output
+  build:
+    commands:
+      - Start-Sleep -s 5
+      - cd src\seleniumscripts\
+      - mvn clean test -Dsurefire  -Durl=$VPROFILE-STAGE-URL -Dusr=admin_vp -Dpass=admin_vp -DsShotPath=screenshots_
+  post_build:
+    commands:
+      - ls 
+      - pwd
+artifacts:
+  files:
+    - 'src\seleniumscripts\ScrnShts\*'
+  name: $Env:TEST_ENV_VARIABLE-$(Get-Date -UFormat "%Y%m%d-%H%M%S")
